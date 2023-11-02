@@ -1,0 +1,14 @@
+---
+import BaseLayout from '../components/layouts/BaseLayout.astro';
+import snippets from '../data/snippets.json';
+import SnippetsComponents from '../components/snippets/Snippets';
+---
+
+<BaseLayout title="Snippets | SnailyLuke">
+	<header class="mx-auto w-full max-w-sm text-center">
+		<h1 class="text-5xl text-orange-100">Snippets</h1>
+	</header>
+	<main class="mx-auto w-full max-w-lg">
+		<SnippetsComponents snippets={snippets} client:only="solid-js" />
+	</main>
+</BaseLayout>

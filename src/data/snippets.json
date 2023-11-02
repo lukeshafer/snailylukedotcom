@@ -1,0 +1,12 @@
+[
+	{
+		"name": "tsconfig.json",
+		"content": "hello tsconfig",
+		"language": "json"
+	},
+	{
+		"name": "prettier config",
+		"content": "hello prettier",
+		"language": "json"
+	}
+]

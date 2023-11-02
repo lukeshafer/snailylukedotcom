@@ -1,16 +1,28 @@
 ---
-
+import BaseLayout from '../components/layouts/BaseLayout.astro';
+import { Icon } from 'astro-icon';
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
-</html>
+<BaseLayout title="SnailyLuke Home">
+	<header
+		class="mx-auto flex w-full max-w-sm flex-col items-start gap-2 p-8 font-sans font-light">
+		<h1 class="text-5xl text-orange-100">Hi I'm Luke</h1>
+		<p class="text-xl">I create software</p>
+	</header>
+	<main>
+		<nav class="mx-auto flex max-w-sm flex-col items-start gap-2 px-4">
+			<a
+				href="/snippets"
+				class="flex min-w-[10rem] items-center justify-between rounded-full border border-sky-950 px-5 py-[0.3rem] transition-colors hover:bg-sky-950">
+				<span>Snippets</span>
+				<Icon name="cil:arrow-right" size="25" />
+			</a>
+			<a
+				href="#"
+				class="flex min-w-[10rem] items-center justify-between rounded-full border border-emerald-950 px-5 py-[0.3rem] transition-colors hover:bg-emerald-950">
+				<span>Blog</span>
+				<Icon name="cil:arrow-right" size="25" />
+			</a>
+		</nav>
+	</main>
+</BaseLayout>
