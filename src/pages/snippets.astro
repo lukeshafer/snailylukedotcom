@@ -1,14 +1,18 @@
 ---
 import BaseLayout from '../components/layouts/BaseLayout.astro';
-import snippets from '../data/snippets.json';
-import SnippetsComponents from '../components/snippets/Snippets';
+import SnippetList from '../components/snippets/SnippetList.astro';
+
+import { getCollection } from 'astro:content';
+
+const snippetCollection = await getCollection('snippets');
+const snippets = snippetCollection.map((snippet) => snippet.data);
 ---
 
 <BaseLayout title="Snippets | SnailyLuke">
 	<header class="mx-auto w-full max-w-sm text-center">
 		<h1 class="text-5xl text-orange-100">Snippets</h1>
 	</header>
-	<main class="mx-auto w-full max-w-lg">
-		<SnippetsComponents snippets={snippets} client:only="solid-js" />
+	<main class="mx-auto w-full max-w-4xl">
+		<SnippetList snippets={snippets} />
 	</main>
 </BaseLayout>

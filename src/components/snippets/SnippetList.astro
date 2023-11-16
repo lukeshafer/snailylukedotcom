@@ -1,0 +1,39 @@
+---
+import SnippetItem from './SnippetItem.astro';
+import type { CollectionEntry } from 'astro:content';
+
+interface Props {
+	snippets: CollectionEntry<'snippets'>['data'][];
+}
+---
+
+<snippet-list class="grid h-96 max-h-screen grid-cols-4">
+	<ul class="h-full overflow-y-scroll bg-gray-900 py-2 grid gap-2 content-start">
+		{
+			Astro.props.snippets.map((snippet) => (
+				<li>
+					<SnippetItem {...snippet} />
+				</li>
+			))
+		}
+	</ul>
+	<snippet-preview class="col-[2_/_-1] bg-[#191724] p-4"></snippet-preview>
+</snippet-list>
+
+<script>
+	class SnippetList extends HTMLElement {
+		snippetPreview: HTMLElement | null = null;
+
+		connectedCallback() {
+			this.snippetPreview = this.querySelector('snippet-preview');
+
+			this.addEventListener('snippetclick', this.handleSnippetClick);
+		}
+
+		handleSnippetClick(e: CustomEvent<{ node: Node }>) {
+			this.snippetPreview?.replaceChildren(e.detail.node);
+		}
+	}
+
+	customElements.define('snippet-list', SnippetList);
+</script>

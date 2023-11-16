@@ -1,0 +1,3 @@
+name: tsconfig.json
+lang: json
+content: "{\n\t\"compilerOptions\": {\n\t\t\"lib\": [ \"DOM\", \"ES2020\" ],\n\t\t\"noEmit\": true,\n\t\t\"checkJs\": true,\n\t\t\"allowJs\": true,\n\t\t\"strict\": true,\n\t\t\"noUnusedLocals\": true,\n\t\t\"noUnusedParameters\": true,\n\t\t\"noUncheckedIndexedAccess\": true\n\t}\n}\n"

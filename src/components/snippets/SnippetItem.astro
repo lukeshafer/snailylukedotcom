@@ -1,0 +1,46 @@
+---
+import { Code } from 'astro:components';
+import type { BuiltinLanguage } from 'shikiji';
+
+interface Props {
+	name: string;
+	lang: BuiltinLanguage;
+	content: string;
+}
+
+const { name, lang, content } = Astro.props;
+---
+
+<snippet-item {name} {lang} {content}>
+	<button class="w-full px-4 p-2 text-left hover:bg-gray-800">{name}</button>
+	<template data-name="code-template">
+		<Code {lang} code={content} theme="rose-pine" />
+	</template>
+</snippet-item>
+
+<script>
+	class SnippetItem extends HTMLElement {
+		codeTemplate: HTMLTemplateElement | null = null;
+
+		connectedCallback() {
+			this.codeTemplate = this.querySelector<HTMLTemplateElement>(
+				'template[data-name="code-template"]'
+			)!;
+
+			this.querySelector('button')?.addEventListener('click', () => {
+				console.log('click');
+
+				this.dispatchEvent(
+					new CustomEvent('snippetclick', {
+						detail: {
+							node: this.codeTemplate!.content.cloneNode(true),
+						},
+						bubbles: true,
+					})
+				);
+			});
+		}
+	}
+
+	customElements.define('snippet-item', SnippetItem);
+</script>

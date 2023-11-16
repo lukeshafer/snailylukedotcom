@@ -1,0 +1,3 @@
+name: 'prettier.config.cjs'
+lang: 'js'
+content: "/** @type {import(\"@types/prettier\").Config} */\nmodule.exports = {\n\tpluginSearchDirs: false,\n\tuseTabs: true,\n\tsingleQuote: true,\n\ttrailingComma: 'es5',\n\ttabWidth: 4,\n\tprintWidth: 100,\n\tbracketSameLine: true,\n};\n"
