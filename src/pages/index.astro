@@ -2,6 +2,23 @@
 import PageName from '../components/common/PageName.astro';
 import BaseLayout from '../components/layouts/BaseLayout.astro';
 import { Icon } from 'astro-icon';
+
+const links = [
+	{
+		name: 'Snippets',
+		href: '/snippets',
+		color: 'sky',
+	},
+	{
+		name: 'Blog',
+		href: '#',
+		color: 'emerald',
+	},
+] satisfies {
+	name: string;
+	href: string;
+	color: string;
+}[];
 ---
 
 <BaseLayout title="SnailyLuke Home">
@@ -12,19 +29,20 @@ import { Icon } from 'astro-icon';
 	</header>
 	<main>
 		<nav class="mx-auto flex max-w-sm flex-col items-start gap-2 px-4">
-			<a
-				href="/snippets"
-				transition:name="snippets-page-bg"
-				class="flex min-w-[10rem] items-center justify-between rounded-full border border-sky-950 px-5 py-[0.3rem] transition-colors hover:bg-sky-950">
-				<span transition:name="snippets">Snippets</span>
-				<Icon name="cil:arrow-right" size="25" transition:name="testtest" />
-			</a>
-			<a
-				href="#"
-				class="flex min-w-[10rem] items-center justify-between rounded-full border border-emerald-950 px-5 py-[0.3rem] transition-colors hover:bg-emerald-950">
-				<span>Blog</span>
-				<Icon name="cil:arrow-right" size="25" />
-			</a>
+			{
+				links.map(({ name, href, color }) => (
+					<a
+						{href}
+						transition:name={`${name}-page-bg`}
+						class:list={[`border-${color}-950`, `hover:bg-${color}-950`]}
+						class="group flex min-w-[10rem] items-center justify-between rounded-full border px-5 py-[0.3rem] transition-colors">
+						<span transition:name={href}>{name}</span>
+						<div class="transition-transform group-hover:translate-x-1 group-hover:scale-105" transition:animate="slide">
+							<Icon name="cil:arrow-right" size="25" />
+						</div>
+					</a>
+				))
+			}
 		</nav>
 	</main>
 </BaseLayout>

@@ -6,30 +6,33 @@ interface Props {
 	name: string;
 	lang: BuiltinLanguage;
 	content: string;
+	selected?: boolean;
 }
 
-const { name, lang, content } = Astro.props;
+const { name, lang, content, selected = false } = Astro.props;
 ---
 
-<snippet-item {name} {lang} {content}>
-	<button class="w-full px-4 p-2 text-left hover:bg-gray-800">{name}</button>
+<snippet-item {name} {lang} {content} {selected}>
+	<button class="w-full px-4 p-2 text-left hover:bg-sky-900/50">{name}</button>
 	<template data-name="code-template">
-		<Code {lang} code={content} theme="rose-pine" />
+		<div class="w-fit">
+			<Code {lang} code={content} theme="rose-pine" />
+		</div>
 	</template>
 </snippet-item>
 
 <script>
 	class SnippetItem extends HTMLElement {
 		codeTemplate: HTMLTemplateElement | null = null;
+		button: HTMLButtonElement | null = null;
 
 		connectedCallback() {
 			this.codeTemplate = this.querySelector<HTMLTemplateElement>(
 				'template[data-name="code-template"]'
 			)!;
+			this.button = this.querySelector('button')!;
 
 			this.querySelector('button')?.addEventListener('click', () => {
-				console.log('click');
-
 				this.dispatchEvent(
 					new CustomEvent('snippetclick', {
 						detail: {
@@ -39,6 +42,21 @@ const { name, lang, content } = Astro.props;
 					})
 				);
 			});
+		}
+
+		static get observedAttributes() {
+			return ['selected'];
+		}
+
+		attributeChangedCallback(name: string, oldValue: string, newValue: string) {
+			if (name === 'selected') {
+				console.log({name, oldValue, newValue});
+				if (newValue !== null) {
+					this.button?.classList.add('bg-sky-950/50');
+				} else {
+					this.button?.classList.remove('bg-sky-950/50');
+				}
+			}
 		}
 	}
 

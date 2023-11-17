@@ -2,6 +2,8 @@
 import SnippetItem from './SnippetItem.astro';
 import type { CollectionEntry } from 'astro:content';
 
+const slug = Astro.params.slug
+
 interface Props {
 	snippets: CollectionEntry<'snippets'>['data'][];
 }
@@ -9,29 +11,29 @@ interface Props {
 
 <snippet-list class="grid h-96 max-h-screen grid-cols-4">
 	<ul
-		class="scrollbar-track-gray-800 scrollbar-thin scrollbar-thumb-gray-700 scrollbar-thumb-rounded
-			grid h-full content-start gap-2 overflow-y-scroll bg-gray-900 py-2">
+		class="scrollbar-thumb-gray-700 grid h-full content-start gap-2 overflow-y-scroll bg-gray-900 py-2 scrollbar-thin scrollbar-track-gray-800">
 		{
-			[
-				...Astro.props.snippets,
-				...Astro.props.snippets,
-				...Astro.props.snippets,
-				...Astro.props.snippets,
-				...Astro.props.snippets,
-				...Astro.props.snippets,
-			].map((snippet) => (
+			Astro.props.snippets.map((snippet) => (
 				<li>
-					<SnippetItem {...snippet} />
+					<SnippetItem {...snippet} selected={snippet.name === slug} />
 				</li>
 			))
 		}
 	</ul>
-	<snippet-preview class="col-[2_/_-1] bg-[#191724] p-4"></snippet-preview>
+	<snippet-preview
+		class="scrollbar-thumb-gray-70k scrollbar-thumb-rounded group relative col-[2_/_-1] overflow-y-scroll bg-[#191724] p-4 scrollbar-thin scrollbar-thumb-gray-800">
+		<button
+			class="absolute right-4 top-4 text-gray-600 opacity-0 transition-all group-hover:opacity-100 hover:font-bold hover:text-gray-300"
+			>Copy</button
+		>
+		<div data-preview-content></div>
+	</snippet-preview>
 </snippet-list>
 
 <script>
 	class SnippetList extends HTMLElement {
-		snippetPreview: HTMLElement | null = null;
+		snippetPreview: SnippetPreview | null = null;
+		currentItem: HTMLElement | null = null;
 
 		connectedCallback() {
 			this.snippetPreview = this.querySelector('snippet-preview');
@@ -40,9 +42,49 @@ interface Props {
 		}
 
 		handleSnippetClick(e: CustomEvent<{ node: Node }>) {
-			this.snippetPreview?.replaceChildren(e.detail.node);
+			this.currentItem?.removeAttribute('selected');
+			this.currentItem = e.target as HTMLElement;
+			this.currentItem.setAttribute('selected', '');
+			this.snippetPreview?.setPreviewContent(e.detail.node);
 		}
 	}
 
 	customElements.define('snippet-list', SnippetList);
+
+	class SnippetPreview extends HTMLElement {
+		previewContent: HTMLElement | null = null;
+		button: HTMLButtonElement | null = null;
+		content: Node | null = null;
+
+		connectedCallback() {
+			this.previewContent = this.querySelector('[data-preview-content]');
+			this.button = this.querySelector('button');
+
+			this.button?.addEventListener('click', this.handleCopyClick.bind(this));
+		}
+
+		setPreviewContent(content: Node) {
+			this.content = content;
+			this.previewContent?.replaceChildren(content);
+		}
+
+		handleCopyClick() {
+			const code = this.previewContent?.querySelector('code');
+			const content = code?.textContent;
+
+			if (content) {
+				navigator.clipboard.writeText(content);
+				const button = this.button;
+				if (!button) return;
+				button.classList.add('text-green-400');
+				button.textContent = 'Copied!';
+				setTimeout(() => {
+					button.classList.remove('text-green-400');
+					button.textContent = 'Copy';
+				}, 1000);
+			}
+		}
+	}
+
+	customElements.define('snippet-preview', SnippetPreview);
 </script>

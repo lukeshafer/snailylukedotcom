@@ -1,0 +1,3 @@
+name: 'prettier.config.cjs - astro'
+lang: 'js'
+content: "/** @type {import(\"@types/prettier\").Config} */\nmodule.exports = {\n\tpluginSearchDirs: false,\n\tuseTabs: true,\n\toverrides: [\n\t\t{\n\t\t\tfiles: '*.astro',\n\t\t\toptions: {\n\t\t\t\tparser: 'astro',\n\t\t\t},\n\t\t},\n\t],\n\tsingleQuote: true,\n\ttrailingComma: 'es5',\n\ttabWidth: 4,\n\tuseTabs: true,\n\tprintWidth: 100,\n\tbracketSameLine: true,\n\tplugins: ['prettier-plugin-astro', 'prettier-plugin-tailwindcss'],\n};\n"
