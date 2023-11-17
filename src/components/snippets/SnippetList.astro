@@ -8,9 +8,18 @@ interface Props {
 ---
 
 <snippet-list class="grid h-96 max-h-screen grid-cols-4">
-	<ul class="h-full overflow-y-scroll bg-gray-900 py-2 grid gap-2 content-start">
+	<ul
+		class="scrollbar-track-gray-800 scrollbar-thin scrollbar-thumb-gray-700 scrollbar-thumb-rounded
+			grid h-full content-start gap-2 overflow-y-scroll bg-gray-900 py-2">
 		{
-			Astro.props.snippets.map((snippet) => (
+			[
+				...Astro.props.snippets,
+				...Astro.props.snippets,
+				...Astro.props.snippets,
+				...Astro.props.snippets,
+				...Astro.props.snippets,
+				...Astro.props.snippets,
+			].map((snippet) => (
 				<li>
 					<SnippetItem {...snippet} />
 				</li>

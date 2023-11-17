@@ -1,16 +1,22 @@
 ---
 import BaseLayout from '../components/layouts/BaseLayout.astro';
 import SnippetList from '../components/snippets/SnippetList.astro';
+import PageName from '../components/common/PageName.astro';
 
 import { getCollection } from 'astro:content';
+import Icon from 'astro-icon';
 
 const snippetCollection = await getCollection('snippets');
 const snippets = snippetCollection.map((snippet) => snippet.data);
 ---
 
 <BaseLayout title="Snippets | SnailyLuke">
-	<header class="mx-auto w-full max-w-sm text-center">
-		<h1 class="text-5xl text-orange-100">Snippets</h1>
+	<header
+		class="mx-auto grid w-full max-w-2xl grid-cols-[auto_1fr] items-center gap-4 text-center">
+		<a href="/" class="transition-transform hover:-translate-x-3" transition:name="testtest">
+			<Icon name="cil:arrow-left" size="45" />
+		</a>
+		<PageName><span transition:name="snippets">Snippets</span></PageName>
 	</header>
 	<main class="mx-auto w-full max-w-4xl">
 		<SnippetList snippets={snippets} />

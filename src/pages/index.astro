@@ -1,4 +1,5 @@
 ---
+import PageName from '../components/common/PageName.astro';
 import BaseLayout from '../components/layouts/BaseLayout.astro';
 import { Icon } from 'astro-icon';
 ---
@@ -6,16 +7,17 @@ import { Icon } from 'astro-icon';
 <BaseLayout title="SnailyLuke Home">
 	<header
 		class="mx-auto flex w-full max-w-sm flex-col items-start gap-2 p-8 font-sans font-light">
-		<h1 class="text-5xl text-orange-100">Hi I'm Luke</h1>
+		<PageName>Hi I'm Luke</PageName>
 		<p class="text-xl">I create software</p>
 	</header>
 	<main>
 		<nav class="mx-auto flex max-w-sm flex-col items-start gap-2 px-4">
 			<a
 				href="/snippets"
+				transition:name="snippets-page-bg"
 				class="flex min-w-[10rem] items-center justify-between rounded-full border border-sky-950 px-5 py-[0.3rem] transition-colors hover:bg-sky-950">
-				<span>Snippets</span>
-				<Icon name="cil:arrow-right" size="25" />
+				<span transition:name="snippets">Snippets</span>
+				<Icon name="cil:arrow-right" size="25" transition:name="testtest" />
 			</a>
 			<a
 				href="#"

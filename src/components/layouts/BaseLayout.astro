@@ -1,22 +1,29 @@
 ---
 import '@fontsource/poppins/300.css';
+import { ViewTransitions } from 'astro:transitions';
 
 interface Props {
 	title: string;
+	bg?: string;
 }
 
-const { title } = Astro.props;
+const { title, bg = 'bg-[#020409]' } = Astro.props;
+
+const pathname = Astro.url.pathname || 'index';
 ---
 
-<html lang="en" class="bg-[#020409] text-gray-50">
+<html lang="en" class={`${bg} text-gray-50`}>
 	<head>
 		<meta charset="utf-8" />
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<meta name="viewport" content="width=device-width" />
 		<meta name="generator" content={Astro.generator} />
 		<title>{title}</title>
+		<ViewTransitions />
 	</head>
-	<body class="flex min-h-screen flex-col justify-center pb-10">
+	<body
+		class="flex min-h-screen flex-col justify-center pb-10"
+		transition:name={pathname + '-page-bg'}>
 		<slot />
 	</body>
 </html>
