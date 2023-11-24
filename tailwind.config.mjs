@@ -1,5 +1,6 @@
 import { fontFamily } from 'tailwindcss/defaultTheme';
 import tailwindScrollbar from 'tailwind-scrollbar';
+import typography from '@tailwindcss/typography';
 
 /** @type {import('tailwindcss').Config} */
 export default {
@@ -11,5 +12,5 @@ export default {
 			},
 		},
 	},
-	plugins: [tailwindScrollbar],
+	plugins: [tailwindScrollbar, typography],
 };

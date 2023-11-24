@@ -1,23 +1,23 @@
 ---
 import PageName from '../components/common/PageName.astro';
+import A from '../components/common/A.astro';
 import BaseLayout from '../components/layouts/BaseLayout.astro';
-import { Icon } from 'astro-icon';
 
 const links = [
 	{
 		name: 'Snippets',
 		href: '/snippets',
-		color: 'sky',
+		color_class: 'border-sky-950 hover:bg-sky-950',
 	},
 	{
 		name: 'Blog',
-		href: '#',
-		color: 'emerald',
+		href: '/blog',
+		color_class: 'border-emerald-950 hover:bg-emerald-950',
 	},
 ] satisfies {
 	name: string;
 	href: string;
-	color: string;
+	color_class: string;
 }[];
 ---
 
@@ -29,20 +29,7 @@ const links = [
 	</header>
 	<main>
 		<nav class="mx-auto flex max-w-sm flex-col items-start gap-2 px-4">
-			{
-				links.map(({ name, href, color }) => (
-					<a
-						{href}
-						transition:name={`${name}-page-bg`}
-						class:list={[`border-${color}-950`, `hover:bg-${color}-950`]}
-						class="group flex min-w-[10rem] items-center justify-between rounded-full border px-5 py-[0.3rem] transition-colors">
-						<span transition:name={href}>{name}</span>
-						<div class="transition-transform group-hover:translate-x-1 group-hover:scale-105" transition:animate="slide">
-							<Icon name="cil:arrow-right" size="25" />
-						</div>
-					</a>
-				))
-			}
+			{links.map(({ name, href, color_class }) => <A {href} {color_class} {name} />)}
 		</nav>
 	</main>
 </BaseLayout>

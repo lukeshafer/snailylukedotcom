@@ -1,0 +1,39 @@
+---
+import Icon from 'astro-icon';
+
+const path = Astro.url.pathname;
+const nav_items = [
+	{
+		href: '/',
+		inactive_icon: 'ph:house',
+		active_icon: 'ph:house-fill',
+	},
+	{
+		href: '/snippets',
+		inactive_icon: 'ant-design:code-outlined',
+		active_icon: 'ant-design:code-filled',
+	},
+	{
+		href: '/blog',
+		inactive_icon: 'ion:book-outline',
+		active_icon: 'ion:book',
+	},
+];
+---
+
+<header
+	class="mx-auto mb-9 grid w-full max-w-2xl grid-cols-[auto_1fr] items-center gap-4 text-center">
+	<nav class="flex gap-4">
+		{
+			nav_items.map((props) => (
+				<a href={props.href}>
+					{path === props.href ? (
+						<Icon name={props.active_icon} size="45" />
+					) : (
+						<Icon name={props.inactive_icon} size="45" />
+					)}
+				</a>
+			))
+		}
+	</nav>
+</header>

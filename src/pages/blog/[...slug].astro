@@ -1,0 +1,70 @@
+---
+import { getEntry } from 'astro:content';
+import BaseLayout from '../../components/layouts/BaseLayout.astro';
+import FormattedDate from '../../components/common/FormattedDate.astro';
+import Icon from 'astro-icon';
+import PageName from '../../components/common/PageName.astro';
+import Header from '../../components/common/Header.astro';
+
+const { slug } = Astro.params;
+
+if (!slug) {
+	throw new Error('Missing slug');
+}
+
+const entry = await getEntry('blog', slug);
+
+if (!entry) {
+	throw new Error('Not found');
+}
+
+const { Content } = await entry.render();
+const { title, pubDate, updatedDate } = entry.data;
+---
+
+<BaseLayout title={title}>
+	<main class="px-grow mx-auto max-w-5xl auto-rows-min justify-items-center gap-12 pb-16 pt-8">
+    <Header title={title} />
+		<header class="mx-auto mb-9 grid w-full max-w-2xl gap-4">
+			<div class="grid grid-cols-[auto_1fr] items-center gap-4 text-center">
+				<a href="/blog" class="group" transition:animate="slide">
+					<div
+						class="transition-transform group-hover:-translate-x-2 group-hover:scale-105">
+						<Icon name="cil:arrow-left" size="45" />
+					</div>
+				</a>
+				<PageName class="font-display text-5xl" transition:name={`${slug}-title`}>
+					{title}
+				</PageName>
+			</div>
+			<div class="font-subheading flex items-end justify-self-end text-lg font-light">
+				<div class="text-stone-500">
+					Published
+					<FormattedDate date={pubDate} />
+				</div>
+				{
+					updatedDate ? (
+						<div class="last-updated-on">
+							Last updated on <FormattedDate date={updatedDate} />
+						</div>
+					) : null
+				}
+			</div>
+		</header>
+		<main class="mx-auto w-full max-w-2xl">
+			<article
+				transition:name={`${slug}-content`}
+				class="prose prose-indigo dark:prose-invert prose-h2:font-subheading prose-h2:text-orange-100 prose-h2:font-normal prose-p:text-base prose-p:leading-5 mx-auto">
+				<Content />
+			</article>
+		</main>
+		<footer class="my-8">
+			<p class="italic">
+				Luke is a software engineer in Columbus, Ohio. He focuses primarily on JavaScript
+				and TypeScript, and is currently working as an integrations developer at <a
+					href="https://osu.edu">the Ohio State University</a
+				>.
+			</p>
+		</footer>
+	</main>
+</BaseLayout>
