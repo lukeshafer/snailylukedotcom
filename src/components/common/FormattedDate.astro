@@ -6,7 +6,6 @@ interface Props {
 
 const { date: tempDate, class: className } = Astro.props;
 const date = new Date(tempDate);
-console.log({ date, tempDate });
 ---
 
 <time datetime={date.toISOString()} class={className ?? ''}>

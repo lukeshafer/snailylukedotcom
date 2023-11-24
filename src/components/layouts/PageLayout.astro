@@ -1,0 +1,19 @@
+---
+import Header from '../common/Header.astro';
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+interface Props {
+	title: string;
+	page_name?: string;
+	bg?: string;
+}
+
+const { title, bg, page_name } = Astro.props;
+---
+
+<BaseLayout title={title} bg={bg}>
+	<Header {page_name} />
+	<main class="px-grow group relative my-6 justify-center gap-12 max-w-4xl mx-auto">
+    <slot />
+  </main>
+</BaseLayout>

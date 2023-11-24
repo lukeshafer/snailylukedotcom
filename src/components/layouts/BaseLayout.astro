@@ -1,7 +1,6 @@
 ---
 import '@fontsource/poppins/300.css';
 import { ViewTransitions } from 'astro:transitions';
-import Header from '../common/Header.astro';
 
 interface Props {
 	title: string;
@@ -23,9 +22,8 @@ const pathname = Astro.url.pathname || 'index';
 		<ViewTransitions />
 	</head>
 	<body
-		class="flex min-h-screen flex-col justify-center pb-10"
+		class="flex min-h-screen flex-col justify-center pb-10 selection:bg-sky-900"
 		transition:name={pathname + '-page-bg'}>
-    <Header />
 		<slot />
 	</body>
 </html>

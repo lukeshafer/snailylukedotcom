@@ -7,18 +7,16 @@ export type Props = {
 };
 
 const { href, name, color_class } = Astro.props;
-console.log('link href', href);
 ---
 
 <a
 	{href}
-	transition:name={`${href}-page-bg`}
 	class:list={{ [color_class]: true }}
 	class="group/link flex min-w-[10rem] items-center justify-between rounded-full border px-5 py-[0.3rem] transition-colors">
 	<span transition:name={href}>{name}</span>
 	<div
 		class="transition-transform group-hover/link:translate-x-1 group-hover/link:scale-105"
-		transition:animate="slide">
+		>
 		<Icon name="cil:arrow-right" size="25" />
 	</div>
 </a>

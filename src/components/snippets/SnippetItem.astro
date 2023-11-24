@@ -48,9 +48,8 @@ const { name, lang, content, selected = false } = Astro.props;
 			return ['selected'];
 		}
 
-		attributeChangedCallback(name: string, oldValue: string, newValue: string) {
+		attributeChangedCallback(name: string, _: string, newValue: string) {
 			if (name === 'selected') {
-				console.log({name, oldValue, newValue});
 				if (newValue !== null) {
 					this.button?.classList.add('bg-sky-950/50');
 				} else {

@@ -1,6 +1,6 @@
 ---
 import { getCollection, type CollectionEntry } from 'astro:content';
-import BaseLayout from '../../components/layouts/BaseLayout.astro';
+import PageLayout from '../../components/layouts/PageLayout.astro';
 import PageName from '../../components/common/PageName.astro';
 import FormattedDate from '../../components/common/FormattedDate.astro';
 import A from '../../components/common/A.astro';
@@ -22,9 +22,8 @@ const collection = (
 	.sort((a, b) => (a.data.pubDate > b.data.pubDate ? -1 : 1));
 ---
 
-<BaseLayout title="Blog | SnailyLuke">
+<PageLayout title="Blog | SnailyLuke" page_name="Blog">
 	<main class="px-grow group relative my-12 flex w-full flex-col justify-center gap-12">
-		<PageName><span transition:name="blog">Blog</span></PageName>
 		<ul
 			class="mx-auto grid w-full max-w-4xl grid-cols-[repeat(auto-fill,minmax(25rem,1fr))] flex-wrap justify-center justify-items-center gap-8 gap-y-20 p-4 py-10">
 			{
@@ -52,4 +51,4 @@ const collection = (
 			}
 		</ul>
 	</main>
-</BaseLayout>
+</PageLayout>
