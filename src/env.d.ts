@@ -3,6 +3,7 @@
 
 interface CustomEventMap {
 	snippetclick: CustomEvent<{
+    name: string;
 		node: Node;
 	}>;
 }

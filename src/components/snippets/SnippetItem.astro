@@ -6,14 +6,16 @@ interface Props {
 	name: string;
 	lang: BuiltinLanguage;
 	content: string;
-	selected?: boolean;
+	fromUrl?: boolean;
 }
 
-const { name, lang, content, selected = false } = Astro.props;
+const { name, lang, content, fromUrl = false } = Astro.props;
 ---
 
-<snippet-item {name} {lang} {content} {selected}>
-	<button class="w-full px-4 p-2 text-left hover:bg-sky-900/50">{name}</button>
+<snippet-item {name} {lang} {content} from-url={fromUrl}>
+	<button class="w-full p-2 px-4 text-left group-[selected]:p-2 hover:bg-sky-900/50"
+		>{name}</button
+	>
 	<template data-name="code-template">
 		<div class="w-fit">
 			<Code {lang} code={content} theme="rose-pine" />
@@ -21,10 +23,36 @@ const { name, lang, content, selected = false } = Astro.props;
 	</template>
 </snippet-item>
 
+<style is:global>
+	snippet-item[selected] button {
+		background-color: theme(colors.sky.950/50);
+	}
+</style>
+
 <script>
-	class SnippetItem extends HTMLElement {
+	export class SnippetItem extends HTMLElement {
 		codeTemplate: HTMLTemplateElement | null = null;
 		button: HTMLButtonElement | null = null;
+
+		constructor() {
+			super();
+			this.button = this.querySelector('button')!;
+			this.codeTemplate = this.querySelector<HTMLTemplateElement>(
+				'template[data-name="code-template"]'
+			);
+		}
+
+		setAsActive() {
+			this.dispatchEvent(
+				new CustomEvent('snippetclick', {
+					detail: {
+            name: this.getAttribute('name'),
+						node: this.codeTemplate!.content.cloneNode(true),
+					},
+					bubbles: true,
+				})
+			);
+		}
 
 		connectedCallback() {
 			this.codeTemplate = this.querySelector<HTMLTemplateElement>(
@@ -32,30 +60,11 @@ const { name, lang, content, selected = false } = Astro.props;
 			)!;
 			this.button = this.querySelector('button')!;
 
+			if (this.hasAttribute('from-url')) this.setAsActive();
+
 			this.querySelector('button')?.addEventListener('click', () => {
-				this.dispatchEvent(
-					new CustomEvent('snippetclick', {
-						detail: {
-							node: this.codeTemplate!.content.cloneNode(true),
-						},
-						bubbles: true,
-					})
-				);
+				this.setAsActive();
 			});
-		}
-
-		static get observedAttributes() {
-			return ['selected'];
-		}
-
-		attributeChangedCallback(name: string, _: string, newValue: string) {
-			if (name === 'selected') {
-				if (newValue !== null) {
-					this.button?.classList.add('bg-sky-950/50');
-				} else {
-					this.button?.classList.remove('bg-sky-950/50');
-				}
-			}
 		}
 	}
 

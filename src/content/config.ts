@@ -1,5 +1,5 @@
 import { z, defineCollection } from 'astro:content';
-import langs from './langs';
+import langs from './_langs';
 
 const snippets = defineCollection({
 	type: 'data',

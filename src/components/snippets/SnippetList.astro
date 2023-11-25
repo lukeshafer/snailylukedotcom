@@ -2,7 +2,7 @@
 import SnippetItem from './SnippetItem.astro';
 import type { CollectionEntry } from 'astro:content';
 
-const slug = Astro.params.slug
+const slug = Astro.params.slug;
 
 interface Props {
 	snippets: CollectionEntry<'snippets'>['data'][];
@@ -11,11 +11,11 @@ interface Props {
 
 <snippet-list class="grid h-96 max-h-screen grid-cols-4">
 	<ul
-		class="scrollbar-thumb-gray-700 grid h-full content-start gap-2 overflow-y-scroll bg-gray-900 py-2 scrollbar-thin scrollbar-track-gray-800">
+		class="grid h-full content-start gap-2 overflow-y-scroll bg-gray-900 py-2 scrollbar-thin scrollbar-track-gray-800 scrollbar-thumb-gray-700">
 		{
 			Astro.props.snippets.map((snippet) => (
 				<li>
-					<SnippetItem {...snippet} selected={snippet.name === slug} />
+					<SnippetItem {...snippet} fromUrl={snippet.name === slug} />
 				</li>
 			))
 		}
@@ -46,6 +46,11 @@ interface Props {
 			this.currentItem = e.target as HTMLElement;
 			this.currentItem.setAttribute('selected', '');
 			this.snippetPreview?.setPreviewContent(e.detail.node);
+
+			const url = new URL(window.location.href);
+			url.pathname = `/snippets/${e.detail.name}`
+
+			window.history.replaceState({}, '', url.toString());
 		}
 	}
 
