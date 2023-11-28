@@ -35,6 +35,10 @@ interface Props {
 		snippetPreview: SnippetPreview | null = null;
 		currentItem: HTMLElement | null = null;
 
+		constructor() {
+			super();
+		}
+
 		connectedCallback() {
 			this.snippetPreview = this.querySelector('snippet-preview');
 
@@ -43,12 +47,15 @@ interface Props {
 
 		handleSnippetClick(e: CustomEvent<{ node: Node }>) {
 			this.currentItem?.removeAttribute('selected');
+			this.snippetPreview = this.querySelector('snippet-preview');
 			this.currentItem = e.target as HTMLElement;
 			this.currentItem.setAttribute('selected', '');
-			this.snippetPreview?.setPreviewContent(e.detail.node);
+			if (this.snippetPreview?.setPreviewContent)
+				this.snippetPreview.setPreviewContent(e.detail.node);
+			else setTimeout(() => this.snippetPreview?.setPreviewContent?.(e.detail.node));
 
 			const url = new URL(window.location.href);
-			url.pathname = `/snippets/${e.detail.name}`
+			url.pathname = `/snippets/${e.detail.name}`;
 
 			window.history.replaceState({}, '', url.toString());
 		}

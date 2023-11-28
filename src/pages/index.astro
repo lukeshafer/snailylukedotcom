@@ -5,19 +5,26 @@ import BaseLayout from '../components/layouts/BaseLayout.astro';
 
 const links = [
 	{
-		name: 'Snippets',
-		href: '/snippets',
-		color_class: 'border-sky-950 hover:bg-sky-950',
+		name: 'About Me',
+		href: '/about-me',
+		color_class: 'border-indigo-950 hover:bg-indigo-950',
+		transition_name: 'about me',
 	},
 	{
 		name: 'Blog',
 		href: '/blog',
 		color_class: 'border-emerald-950 hover:bg-emerald-950',
 	},
+	{
+		name: 'Snippets',
+		href: '/snippets',
+		color_class: 'border-sky-950 hover:bg-sky-950',
+	},
 ] satisfies {
 	name: string;
 	href: string;
 	color_class: string;
+	transition_name?: string;
 }[];
 ---
 
@@ -29,7 +36,11 @@ const links = [
 	</header>
 	<main>
 		<nav class="mx-auto flex max-w-sm flex-col items-start gap-2 px-4">
-			{links.map(({ name, href, color_class }) => <A {href} {color_class} {name} />)}
+			{
+				links.map(({ name, href, color_class, transition_name }) => (
+					<A {href} {color_class} {name} {transition_name} />
+				))
+			}
 		</nav>
 	</main>
 </BaseLayout>
