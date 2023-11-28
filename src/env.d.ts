@@ -3,8 +3,10 @@
 
 interface CustomEventMap {
 	snippetclick: CustomEvent<{
-    name: string;
+		label: string | null;
+		href: string;
 		node: Node;
+    key: string;
 	}>;
 }
 declare global {

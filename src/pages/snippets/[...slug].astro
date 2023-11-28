@@ -1,21 +1,33 @@
 ---
+import type { GetStaticPaths } from 'astro';
 import PageLayout from '../../components/layouts/PageLayout.astro';
 import SnippetList from '../../components/snippets/SnippetList.astro';
-
 import { getCollection } from 'astro:content';
-const snippetCollection = await getCollection('snippets');
-const snippets = snippetCollection.map((snippet) => snippet.data);
+
+export const getStaticPaths = (async () => {
+	const entries = await getCollection('snippets');
+	console.log(JSON.stringify(entries, null, 2));
+	return [
+		{
+			params: { slug: undefined },
+			props: { entries },
+		},
+		...entries.map((currentEntry) => ({
+			params: { slug: currentEntry.slug },
+			props: { currentEntry, entries },
+		})),
+	];
+}) satisfies GetStaticPaths;
+
+const { currentEntry, entries } = Astro.props;
+
+const { Content } = (await currentEntry?.render()) ?? {};
 ---
 
 <PageLayout title="Snippets | SnailyLuke" page_name="Snippets">
 	<main class="mx-auto w-full max-w-4xl">
-		<SnippetList snippets={snippets} />
+		<SnippetList snippets={entries} active_entry={currentEntry}>
+			{Content ? <Content /> : null}
+		</SnippetList>
 	</main>
-	<details class="mx-auto my-8 w-full max-w-xl rounded bg-gray-900 p-4">
-		<summary>Create snippet string</summary>
-		<snippet-maker></snippet-maker>
-		<script>
-			import '../../lib/snippet-maker';
-		</script>
-	</details>
 </PageLayout>

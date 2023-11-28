@@ -3,6 +3,8 @@
   "compilerOptions": {
     "strictNullChecks": true,
     "useDefineForClassFields": false,
-    "experimentalDecorators": true
+    "experimentalDecorators": true,
+    "jsx": "preserve",
+    "jsxImportSource": "solid-js"
   }
 }

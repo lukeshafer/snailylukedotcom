@@ -1,72 +1,62 @@
 ---
-import { Code } from 'astro:components';
-import type { BuiltinLanguage } from 'shikiji';
+import type { CollectionEntry } from 'astro:content';
+import css from '../../lib/css';
 
-interface Props {
-	name: string;
-	lang: BuiltinLanguage;
-	content: string;
-	fromUrl?: boolean;
-}
+type Props = CollectionEntry<'snippets'> & {
+	href: string;
+};
 
-const { name, lang, content, fromUrl = false } = Astro.props;
+const {
+	render,
+	data: { title, key },
+	href,
+} = Astro.props;
+
+const { Content } = await render();
 ---
 
-<snippet-item {name} {lang} {content} from-url={fromUrl}>
-	<button class="w-full p-2 px-4 text-left group-[selected]:p-2 hover:bg-sky-900/50"
-		>{name}</button
-	>
+<snippet-item class="w-full" {title} {key}>
+	<a {href} class={`block w-full p-2 px-4 text-left hover:bg-sky-900/50`}>{title}</a>
 	<template data-name="code-template">
-		<div class="w-fit">
-			<Code {lang} code={content} theme="rose-pine" />
-		</div>
+		<Content />
 	</template>
 </snippet-item>
 
-<style is:global>
-	snippet-item[selected] button {
-		background-color: theme(colors.sky.950/50);
-	}
-</style>
+<style
+	set:html={css`
+		:where(snippet-list[data-active=${key}] a[href=${href}]) {
+			background-color: rgb(12 74 110 / 0.2);
+			view-transition-name: active;
+		}
+	`}
+></style>
 
 <script>
-	export class SnippetItem extends HTMLElement {
-		codeTemplate: HTMLTemplateElement | null = null;
-		button: HTMLButtonElement | null = null;
+	customElements.define(
+		'snippet-item',
+		class SnippetItem extends HTMLElement {
+			connectedCallback() {
+				const anchor = this.querySelector('a');
+				const codeTemplate = this.querySelector('template[data-name="code-template"]');
 
-		constructor() {
-			super();
-			this.button = this.querySelector('button')!;
-			this.codeTemplate = this.querySelector<HTMLTemplateElement>(
-				'template[data-name="code-template"]'
-			);
+				if (!(codeTemplate instanceof HTMLTemplateElement)) return;
+
+				anchor?.addEventListener('click', (e) => {
+					e.preventDefault();
+					const href = anchor.getAttribute('href') || '';
+					this.dispatchEvent(
+						new CustomEvent('snippetclick', {
+							detail: {
+								label: this.getAttribute('title'),
+								key: this.getAttribute('key') || '',
+								href,
+								node: codeTemplate.content.cloneNode(true),
+							},
+							bubbles: true,
+						})
+					);
+				});
+			}
 		}
-
-		setAsActive() {
-			this.dispatchEvent(
-				new CustomEvent('snippetclick', {
-					detail: {
-            name: this.getAttribute('name'),
-						node: this.codeTemplate!.content.cloneNode(true),
-					},
-					bubbles: true,
-				})
-			);
-		}
-
-		connectedCallback() {
-			this.codeTemplate = this.querySelector<HTMLTemplateElement>(
-				'template[data-name="code-template"]'
-			)!;
-			this.button = this.querySelector('button')!;
-
-			if (this.hasAttribute('from-url')) this.setAsActive();
-
-			this.querySelector('button')?.addEventListener('click', () => {
-				this.setAsActive();
-			});
-		}
-	}
-
-	customElements.define('snippet-item', SnippetItem);
+	);
 </script>

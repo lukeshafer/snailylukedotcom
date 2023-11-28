@@ -1,0 +1,56 @@
+---
+interface Props {
+	initial_content?: string;
+}
+
+const { initial_content } = Astro.props;
+---
+
+<copy-button content={initial_content} class="absolute right-4 top-4 inline-block">
+	<button
+		class="absolute right-4 top-4 text-gray-600 opacity-0 transition-all group-hover/code-preview:opacity-100 hover:font-bold hover:text-gray-300">
+		Copy
+	</button>
+</copy-button>
+
+<style>
+	copy-button:not(:defined) {
+		display: none;
+	}
+</style>
+
+<script>
+	customElements.define(
+		'copy-button',
+		class CopyButton extends HTMLElement {
+			connectedCallback() {
+				const button = this.querySelector('button');
+				let timeout: NodeJS.Timeout | null = null;
+
+				button?.addEventListener('click', () => {
+					if (timeout) clearTimeout(timeout);
+
+					const content = this.getAttribute('content');
+					const orig_btn_text = button.textContent;
+					if (!content) {
+						button.textContent = 'Nothing to copy';
+						button.classList.add('text-red-400');
+						timeout = setTimeout(() => {
+							button.textContent = orig_btn_text;
+							button.classList.remove('text-red-400');
+						}, 1000);
+						return;
+					}
+
+					navigator.clipboard.writeText(content);
+					button.classList.add('text-green-400');
+					button.textContent = 'Copied';
+					timeout = setTimeout(() => {
+						button.classList.remove('text-green-400');
+						button.textContent = orig_btn_text;
+					}, 1000);
+				});
+			}
+		}
+	);
+</script>

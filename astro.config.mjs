@@ -1,12 +1,18 @@
+// @ts-check
 import { defineConfig } from 'astro/config';
 import tailwind from '@astrojs/tailwind';
-import node from '@astrojs/node';
+import theme from './src/code-theme.json'
+
+import solidJs from '@astrojs/solid-js';
 
 // https://astro.build/config
 export default defineConfig({
-  integrations: [tailwind()],
-  output: 'server',
-  adapter: node({
-    mode: 'standalone',
-  }),
+	markdown: {
+		shikiConfig: {
+      // @ts-expect-error - this theme is valid
+			theme: theme,
+		},
+	},
+	integrations: [tailwind(), solidJs()],
+	output: 'static',
 });
