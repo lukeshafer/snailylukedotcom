@@ -9,16 +9,18 @@ type Props = {
 ---
 
 <header
-	class="mx-auto grid w-full max-w-2xl mdtsconfig.json:grid-cols-[auto_1fr] justify-items-center items-center gap-4 py-8 text-center"
+	class="mdtsconfig.json:grid-cols-[auto_1fr] mx-auto grid w-full max-w-2xl items-center justify-items-center gap-4 py-8 text-center"
 	transition:name="page-header">
 	<nav class="flex gap-4">
 		<HeaderNavLink href="/" name="Home" inactive_icon="ph:house" active_icon="ph:house-fill" />
-		<HeaderNavLink
-			name="About Me"
-			href="/about-me"
-			inactive_icon="ion:person-outline"
-			active_icon="ion:person"
-		/>
+		{
+			/*<HeaderNavLink
+      name="About Me"
+      href="/about-me"
+      inactive_icon="ion:person-outline"
+      active_icon="ion:person"
+      />*/
+		}
 		<HeaderNavLink
 			href="/blog"
 			name="Blog"
