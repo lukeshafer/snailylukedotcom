@@ -19,10 +19,10 @@ const pathname = Astro.url.pathname || 'index';
 		<meta name="viewport" content="width=device-width" />
 		<meta name="generator" content={Astro.generator} />
 		<title>{title}</title>
-		<ViewTransitions />
+		<ViewTransitions fallback="none"  />
 	</head>
 	<body
-		class="flex min-h-screen flex-col justify-center pb-10 selection:bg-sky-900"
+		class="flex min-h-screen flex-col pb-10 selection:bg-sky-900"
 		transition:name={pathname + '-page-bg'}>
 		<slot />
 	</body>

@@ -1,75 +1,40 @@
 ---
-import Icon from 'astro-icon';
 import PageName from './PageName.astro';
+import HeaderNavLink from './HeaderNavLink.astro';
+import If from './If.astro';
 
 type Props = {
 	page_name?: string;
 };
-
-const { page_name } = Astro.props;
-
-const path = `/${Astro.url.pathname.split('/')[1]}`;
-
-const nav_items = [
-	{
-		name: 'Home',
-		href: '/',
-		inactive_icon: 'ph:house',
-		active_icon: 'ph:house-fill',
-	},
-	{
-		name: 'About Me',
-		href: '/about-me',
-		inactive_icon: 'ion:person-outline',
-		active_icon: 'ion:person',
-	},
-	{
-		name: 'Blog',
-		href: '/blog',
-		inactive_icon: 'ion:book-outline',
-		active_icon: 'ion:book',
-	},
-	{
-		name: 'Snippets',
-		href: '/snippets',
-		inactive_icon: 'ant-design:code-outlined',
-		active_icon: 'ant-design:code-filled',
-	},
-] satisfies {
-	name: string;
-	href: string;
-	inactive_icon: string;
-	active_icon: string;
-}[];
 ---
 
 <header
-	class="mx-auto grid w-full max-w-2xl grid-cols-[auto_1fr] items-center gap-4 py-8 text-center"
+	class="mx-auto grid w-full max-w-2xl mdtsconfig.json:grid-cols-[auto_1fr] justify-items-center items-center gap-4 py-8 text-center"
 	transition:name="page-header">
 	<nav class="flex gap-4">
-		{
-			nav_items.map(({ name, href, inactive_icon, active_icon }) =>
-				path === href ? (
-					<div class="flex flex-col items-center transition-colors">
-						<Icon name={active_icon} size="45" />
-						<p class="text-center text-xs">{name}</p>
-					</div>
-				) : (
-					<a
-						href={href}
-						class="flex flex-col items-center transition-colors hover:text-sky-500">
-						<Icon name={inactive_icon} size="45" />
-						<p class="text-center text-xs">{name}</p>
-					</a>
-				)
-			)
-		}
+		<HeaderNavLink href="/" name="Home" inactive_icon="ph:house" active_icon="ph:house-fill" />
+		<HeaderNavLink
+			name="About Me"
+			href="/about-me"
+			inactive_icon="ion:person-outline"
+			active_icon="ion:person"
+		/>
+		<HeaderNavLink
+			href="/blog"
+			name="Blog"
+			inactive_icon="ion:book-outline"
+			active_icon="ion:book"
+		/>
+		<HeaderNavLink
+			href="/snippets"
+			name="Snippets"
+			inactive_icon="ant-design:code-outlined"
+			active_icon="ant-design:code-filled"
+		/>
 	</nav>
-	{
-		page_name ? (
-			<PageName>
-				<span transition:name={page_name.toLowerCase()}>{page_name}</span>
-			</PageName>
-		) : null
-	}
+	<If test={Astro.props.page_name}>
+		<PageName>
+			<span transition:name={Astro.url.pathname}>{Astro.props.page_name}</span>
+		</PageName>
+	</If>
 </header>

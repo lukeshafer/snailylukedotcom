@@ -1,7 +1,6 @@
 ---
 import { getCollection, type CollectionEntry } from 'astro:content';
 import PageLayout from '../../components/layouts/PageLayout.astro';
-import PageName from '../../components/common/PageName.astro';
 import FormattedDate from '../../components/common/FormattedDate.astro';
 import A from '../../components/common/A.astro';
 
@@ -23,32 +22,30 @@ const collection = (
 ---
 
 <PageLayout title="Blog | SnailyLuke" page_name="Blog">
-	<main class="px-grow group relative my-12 flex w-full flex-col justify-center gap-12">
-		<ul
-			class="mx-auto grid w-full max-w-4xl grid-cols-[repeat(auto-fill,minmax(25rem,1fr))] flex-wrap justify-center justify-items-center gap-8 gap-y-20 p-4 py-10">
-			{
-				collection.map((post) => (
-					<li class="border-primary-400 grid w-96 items-center gap-2">
-						<h2
-							class="font-subheading text-xl font-medium"
-							transition:name={post.data.title.toLowerCase()}>
-							{post.data.title}
-						</h2>
-						<FormattedDate
-							date={post.data.pubDate}
-							class="w-max whitespace-nowrap text-emerald-300 opacity-70"
-						/>
-						<p class="px-2" transition:name={`${post.slug}-content`}>
-							{post.data.description}
-						</p>
-						<A
-							href={`/blog/${post.slug}/`}
-							color_class="border-emerald-950 hover:bg-emerald-950 w-48"
-							name="Read more..."
-						/>
-					</li>
-				))
-			}
-		</ul>
-	</main>
+	<ul
+		class="grid w-full grid-cols-1 lg:grid-cols-2 flex-wrap justify-center justify-items-center gap-8 gap-y-20 p-4 py-10">
+		{
+			collection.map((post) => (
+				<li class="border-primary-400 grid w-96 items-center gap-2">
+					<h2
+						class="font-subheading text-xl font-medium"
+						transition:name={post.data.title.toLowerCase()}>
+						{post.data.title}
+					</h2>
+					<FormattedDate
+						date={post.data.pubDate}
+						class="w-max whitespace-nowrap text-emerald-300 opacity-70"
+					/>
+					<p class="px-2" transition:name={`${post.slug}-content`}>
+						{post.data.description}
+					</p>
+					<A
+						href={`/blog/${post.slug}/`}
+						color_class="border-emerald-950 hover:bg-emerald-950 w-48"
+						name="Read more..."
+					/>
+				</li>
+			))
+		}
+	</ul>
 </PageLayout>

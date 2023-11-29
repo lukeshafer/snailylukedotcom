@@ -4,12 +4,12 @@ import A from '../components/common/A.astro';
 import BaseLayout from '../components/layouts/BaseLayout.astro';
 
 const links = [
-	{
+	/*{
 		name: 'About Me',
 		href: '/about-me',
 		color_class: 'border-indigo-950 hover:bg-indigo-950',
 		transition_name: 'about me',
-	},
+	},*/
 	{
 		name: 'Blog',
 		href: '/blog',
@@ -29,18 +29,22 @@ const links = [
 ---
 
 <BaseLayout title="SnailyLuke Home">
-	<header
-		class="mx-auto flex w-full max-w-sm flex-col items-start gap-2 p-8 font-sans font-light">
-		<PageName>Hi I'm Luke</PageName>
-		<p class="text-xl">I create software</p>
-	</header>
-	<main>
-		<nav class="mx-auto flex max-w-sm flex-col items-start gap-2 px-4">
-			{
-				links.map(({ name, href, color_class, transition_name }) => (
-					<A {href} {color_class} {name} {transition_name} />
-				))
-			}
-		</nav>
-	</main>
+	<div class="min-h-screen flex flex-col justify-center">
+		<header
+			class="mx-auto flex w-full max-w-sm flex-col items-start gap-2 p-8 font-sans font-light">
+			<PageName>Hi I'm Luke</PageName>
+			<p class="text-xl">I create software</p>
+		</header>
+		<main>
+			<nav class="mx-auto flex max-w-sm flex-col items-start gap-2 px-4">
+				<A
+					name="About Me"
+					href="/about-me"
+					color_class="border-indigo-950 hover:bg-indigo-950"
+				/>
+				<A name="Blog" href="/blog" color_class="border-emerald-950 hover:bg-emerald-950" />
+				<A name="Snippets" href="/snippets" color_class="border-sky-950 hover:bg-sky-950" />
+			</nav>
+		</main>
+	</div>
 </BaseLayout>

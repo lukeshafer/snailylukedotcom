@@ -1,0 +1,7 @@
+---
+type Props = {
+	test: unknown;
+};
+---
+
+{Boolean(Astro.props.test) ? <slot /> : <slot name="else" />}

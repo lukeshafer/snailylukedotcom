@@ -1,8 +1,17 @@
 ---
-import { getEntry } from 'astro:content';
+import type { GetStaticPaths } from 'astro';
+import { getCollection, getEntry } from 'astro:content';
 import PageLayout from '../../components/layouts/PageLayout.astro';
 import FormattedDate from '../../components/common/FormattedDate.astro';
 import PageName from '../../components/common/PageName.astro';
+
+export const getStaticPaths = (async () => {
+	const entries = await getCollection('blog');
+	return entries.map((entry) => ({
+		params: { slug: entry.slug },
+		props: { entry },
+	}));
+}) satisfies GetStaticPaths;
 
 const { slug } = Astro.params;
 
@@ -10,22 +19,18 @@ if (!slug) {
 	throw new Error('Missing slug');
 }
 
-const entry = await getEntry('blog', slug);
+const {
+	render,
+	data: { title, pubDate, updatedDate },
+} = Astro.props.entry;
 
-if (!entry) {
-	throw new Error('Not found');
-}
-
-const { Content } = await entry.render();
-const { title, pubDate, updatedDate } = entry.data;
+const { Content } = await render();
 ---
 
-<PageLayout title={title}>
+<PageLayout {title}>
 	<header class="mx-auto mb-9 grid w-full max-w-2xl gap-4">
 		<div class="grid grid-cols-[auto_1fr] items-center gap-4 text-center">
-			<PageName class="font-display text-5xl">
-				{title}
-			</PageName>
+			<PageName class="font-display text-5xl">{title}</PageName>
 		</div>
 		<div class="font-subheading flex items-end justify-self-end text-lg font-light">
 			<div class="text-stone-500">

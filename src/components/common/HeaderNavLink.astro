@@ -1,0 +1,23 @@
+---
+import Icon from 'astro-icon';
+
+type Props = {
+	href: string;
+	name: string;
+	inactive_icon: string;
+	active_icon: string;
+};
+
+const { href, name, inactive_icon, active_icon } = Astro.props;
+
+const isActive = `/${Astro.url.pathname.split('/')[1]}` === href;
+---
+
+<a
+  transition:name={href + "header-nav-link"}
+	href={href}
+	aria-current={isActive ? 'page' : undefined}
+	class="flex flex-col items-center transition-colors hover:text-sky-200">
+	<Icon name={isActive ? active_icon : inactive_icon} size="45" />
+	<p class="text-center text-xs">{name}</p>
+</a>
