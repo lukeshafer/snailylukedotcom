@@ -6,11 +6,10 @@ import { getCollection } from 'astro:content';
 
 export const getStaticPaths = (async () => {
 	const entries = await getCollection('snippets');
-	console.log(JSON.stringify(entries, null, 2));
 	return [
 		{
 			params: { slug: undefined },
-			props: { entries },
+			props: { currentEntry: undefined, entries },
 		},
 		...entries.map((currentEntry) => ({
 			params: { slug: currentEntry.slug },

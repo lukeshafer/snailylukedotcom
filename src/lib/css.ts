@@ -14,7 +14,6 @@ function escapeCSS(input: string) {
 	if (typeof globalThis?.CSS?.escape === 'function') return CSS.escape(input);
 
 	// Escape polyfill for Node or other environments
-	const string = String(input);
 	const firstCodeUnit = input.charCodeAt(0);
 
 	return input

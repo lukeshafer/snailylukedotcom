@@ -1,5 +1,8 @@
 {
   "extends": "astro/tsconfigs/strict",
+  "exclude": [
+    "dist"
+  ],
   "compilerOptions": {
     "strictNullChecks": true,
     "useDefineForClassFields": false,
